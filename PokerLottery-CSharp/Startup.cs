@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PokerLottery.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace PokerLottery
 {
@@ -14,6 +16,7 @@ namespace PokerLottery
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var EFSetting = Configuration.GetSection("ConnectionStrings")["MysqlConnection"];
         }
 
         public IConfiguration Configuration { get; }
@@ -21,6 +24,7 @@ namespace PokerLottery
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MysqlContext>(options => options.UseMySql(Configuration.GetSection("ConnectionStrings")["MysqlConnection"]));
             services.AddMvc();
         }
 
