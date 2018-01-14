@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PokerLottery.EF.Domain
+namespace PokerLottery.Services
 {
-    public class LotteryPool
+    public interface ILotteryService
     {
     }
 }

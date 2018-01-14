@@ -5,18 +5,14 @@ using System.Threading.Tasks;
 using PokerLottery.EF;
 namespace PokerLottery.EF.Domain
 {
-    public class LotteryHistory:BaseEntity
+    public class BuyerIssue:BaseEntity
     {
         public int BuyerId { get; set; }
         public int IssueId { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
-        public int C { get; set; }
-        public int D { get; set; }
         /// <summary>
-        /// 获得类型
+        /// 已购买数量
         /// </summary>
-        public int Type { get; set; }
-        public DateTime PurchaseTime { get; set; }
+        public int PurchaseQuantity { get; set; }
+ 
     }
 }
