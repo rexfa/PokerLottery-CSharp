@@ -17,6 +17,6 @@ namespace PokerLottery.EF.Domain
         /// 获得类型
         /// </summary>
         public int Type { get; set; }
-        public DateTime PurchaseTime { get; set; }
+        public DateTime OrderTime { get; set; }
     }
 }

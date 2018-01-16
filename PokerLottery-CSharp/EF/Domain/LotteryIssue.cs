@@ -12,11 +12,12 @@ namespace PokerLottery.EF.Domain
         /// 本期彩票设定
         /// </summary>
         public string IssueSetting { get; set; }
+        public string LotteryParameters { get; set; }
         /// <summary>
         /// 结果集，储存序列化对象
         /// </summary>
         public string Result { get; set; }
-        public int PoolNum { get; set; }
+        public int OrderQuantity { get; set; }
         public DateTime BeginOn { get; set; }
         public DateTime StopOn { get; set; }
         public DateTime CreatedOn { get; set; }
