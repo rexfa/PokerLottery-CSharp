@@ -7,5 +7,6 @@ namespace PokerLottery.Services
 {
     public interface IBuyerService
     {
+        void AddBuyer(string BuyerChId,int ChannelId);
     }
 }

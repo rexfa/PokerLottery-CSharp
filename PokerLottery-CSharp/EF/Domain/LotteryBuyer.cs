@@ -9,5 +9,8 @@ namespace PokerLottery.EF.Domain
     {
         public int ChannelId { get; set; }
         public string ChannelName { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+        public ICollection<LotteryHistory> LotteryHistorys { get; set; }
     }
 }

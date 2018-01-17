@@ -21,5 +21,6 @@ namespace PokerLottery.EF.Domain
         public DateTime BeginOn { get; set; }
         public DateTime StopOn { get; set; }
         public DateTime CreatedOn { get; set; }
+        public ICollection<LotteryHistory> LotteryHistorys { get; set; }
     }
 }

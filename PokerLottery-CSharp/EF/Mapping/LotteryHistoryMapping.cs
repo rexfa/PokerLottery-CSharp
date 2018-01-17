@@ -18,6 +18,11 @@ namespace PokerLottery.EF.Mapping
             builder.Property(lh => lh.OrderTime).IsRequired();
             builder.Property(lh => lh.IssueId).IsRequired();
             builder.Property(lh => lh.Type).IsRequired();
+
+            builder.HasOne(lh=>lh.LotteryBuyer).WithMany(lb=>lb.LotteryHistorys).HasForeignKey(lh=>lh.BuyerId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(lh=>lh.LotteryIssue).WithMany(li=>li.LotteryHistorys).HasForeignKey(lh=>lh.IssueId).OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

@@ -11,6 +11,7 @@ namespace PokerLottery.EF.Mapping
             builder.ToTable("LotteryBuyer");
             builder.HasKey(lb => lb.Id);
             builder.Property(lb=>lb.ChannelName).IsRequired().HasMaxLength(100);
+            builder.Property(lb => lb.CreatedOn).IsRequired();
             //builder.Property(lb=>lb.)
         }
     }
