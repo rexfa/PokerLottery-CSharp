@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace PokerLottery.EF
 {
@@ -13,5 +14,7 @@ namespace PokerLottery.EF
         void DeleteList(IList<T> entitys);
         IQueryable<T> Table { get; }
         IQueryable<T> TableNoTracking { get; }
+        DbSet<T> CurrentDbSet { get; set; }
+
     }
 }

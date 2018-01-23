@@ -9,4 +9,3 @@ namespace PokerLottery.Configuration
     {
     }
 }
-=

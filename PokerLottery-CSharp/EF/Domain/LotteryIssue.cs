@@ -9,6 +9,14 @@ namespace PokerLottery.EF.Domain
     {
         public string IssueName { get; set; }
         /// <summary>
+        /// 状态
+        /// </summary>
+        public int Stat { get; set; }
+        /// <summary>
+        /// 奖池命令  0,1
+        /// </summary>
+        public int PoolCmd { get; set; }
+        /// <summary>
         /// 本期彩票设定
         /// </summary>
         public string IssueSetting { get; set; }

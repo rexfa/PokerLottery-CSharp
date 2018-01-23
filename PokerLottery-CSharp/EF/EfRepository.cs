@@ -143,6 +143,7 @@ namespace PokerLottery.EF
                 return this.Entities;
             }
         }
+        
         public virtual IQueryable<T> TableNoTracking
         {
             get
@@ -159,5 +160,21 @@ namespace PokerLottery.EF
                 return _entities;
             }
         }
+
+        #region Ex
+        //public void Update(string newS, string o)
+        //{
+        //    this.Entities
+        //}
+        public virtual DbSet<T> CurrentDbSet
+        {
+            get
+            {
+                if (_entities == null)
+                    _entities = _context.Set<T>();
+                return _entities;
+            }
+        }
+        #endregion
     }
 }

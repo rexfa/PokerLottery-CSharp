@@ -15,7 +15,7 @@ namespace PokerLottery.EF.Mapping
             builder.Property(lp => lp.C).IsRequired();
             builder.Property(lp => lp.D).IsRequired();
             builder.Property(lp => lp.BuyerId).IsRequired();
-            builder.Property(lp => lp.OrderTime).IsRequired();
+            builder.Property(lp => lp.OrderTime).IsRequired(false);
             builder.Property(lh => lh.Stat).IsRequired();
             builder.Property(lp => lp.Type).IsRequired();
         }
