@@ -1,10 +1,10 @@
 ﻿namespace PokerLottery.Configuration
 {
-    public static class LotteryType
+    public enum LotteryType
     {
-        public static int NotProcessed = 0;
-        public static int Sold = 1;
-        public static int Gift = 2;
-        public static int Reward = 3;
+        NotProcessed = 0,
+        Sold = 1,
+        Gift = 2,
+        Reward = 3
     }
 }

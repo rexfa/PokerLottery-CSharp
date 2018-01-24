@@ -1,8 +1,8 @@
 ﻿namespace PokerLottery.Configuration
 {
-    public static class LotteryStat
+    public enum LotteryStat
     {
-        public static int Selling = 0;
-        public static int Sold = 1;
+        Selling = 0,
+        Sold = 1
     }
 }

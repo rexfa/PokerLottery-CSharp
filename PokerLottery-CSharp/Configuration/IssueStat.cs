@@ -1,9 +1,9 @@
 ﻿namespace PokerLottery.Configuration
 {
-    public static class IssueStat
+    public enum IssueStat
     {
-        public static int Establish = 0;
-        public static int Discontinued = 1;
-        public static int Accomplish = 2;
+        Establish = 0,
+        Discontinued = 1,
+        Accomplish = 2
     }
 }

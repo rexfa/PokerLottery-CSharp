@@ -12,6 +12,7 @@ namespace PokerLottery.Services
     public class LotteryService : ILotteryService
     {
         private readonly MysqlContext _mysqlContext;
+        private readonly EfRepository<BuyerIssue> _buyerIssueRepository;
         private readonly EfRepository<LotteryIssue> _issueRepository;
         private readonly EfRepository<LotteryPool0> _pool0Repository;
         private readonly EfRepository<LotteryPool1> _pool1Repository;
@@ -19,6 +20,7 @@ namespace PokerLottery.Services
         public LotteryService(MysqlContext mysqlContext ,IMemoryCache memoryCache)
         {
             this._mysqlContext = mysqlContext;
+            _buyerIssueRepository = new EfRepository<BuyerIssue>(this._mysqlContext);
             _issueRepository = new EfRepository<LotteryIssue>(this._mysqlContext);
             _pool0Repository = new EfRepository<LotteryPool0>(this._mysqlContext);
             _pool1Repository = new EfRepository<LotteryPool1>(this._mysqlContext);
@@ -40,7 +42,7 @@ namespace PokerLottery.Services
             {
                 if(lastIssue.PoolCmd == 0)
                     poolCmd = 1;
-                if (lastIssue.Stat != IssueStat.Accomplish)
+                if (lastIssue.Stat != (int)IssueStat.Accomplish)
                     throw new Exception("上一期没有完成，不能创建新一期。");
             }
             DateTime now = DateTime.Now;
@@ -53,11 +55,36 @@ namespace PokerLottery.Services
                 Result = "",
                 CreatedOn = now,
                 PoolCmd = poolCmd,
-                Stat = IssueStat.Establish                
+                Stat = (int)IssueStat.Establish                
             };
             _issueRepository.Insert(newIssue);
             ConstructPool(poolCmd);
             return true;
+        }
+        public BuyerIssue SellLottery(LotteryBuyer lotteryBuyer, LotteryType lotteryType)
+        {
+            var issue = GetlatestIssue();
+            if (issue == null)
+                throw new Exception("没有找到本期数据。");
+            if (issue.Stat != (int)IssueStat.Establish)
+                throw new Exception("本期已经结束。");
+            var buyerIssue = _buyerIssueRepository.Table.Where(bi => bi.BuyerId == lotteryBuyer.Id&&bi.IssueId==issue.Id).FirstOrDefault();
+            if (buyerIssue == null)
+            {
+                buyerIssue = new BuyerIssue()
+                {
+                    BuyerId = lotteryBuyer.Id,
+                    IssueId = issue.Id,
+                    PurchaseQuantity = 0
+                };
+                _buyerIssueRepository.Insert(buyerIssue);
+            }
+            buyerIssue.PurchaseQuantity = buyerIssue.PurchaseQuantity + 1;
+        }
+        public LotteryIssue GetlatestIssue()
+        {
+            var issue = _issueRepository.Table.OrderByDescending(i => i.CreatedOn).FirstOrDefault();
+            return issue;
         }
 
         public void LotteryDraws(LotteryIssue lotteryIssue, string LotteryParameters)
@@ -71,6 +98,10 @@ namespace PokerLottery.Services
         }
 
         #region Private
+        /// <summary>
+        /// 创建两个彩票池
+        /// </summary>
+        /// <param name="cmd"></param>
         private void ConstructPool(int cmd)
         {
             if (cmd == 0)
@@ -92,8 +123,8 @@ namespace PokerLottery.Services
                                         B = j,
                                         C = k,
                                         D = l,
-                                        Stat = LotteryStat.Selling,
-                                        Type = LotteryType.NotProcessed,
+                                        Stat = (int)LotteryStat.Selling,
+                                        Type = (int)LotteryType.NotProcessed,
                                         BuyerId = 0
                                     };
                                     lp0s.Add(lp0);
@@ -136,8 +167,8 @@ namespace PokerLottery.Services
                                         B = j,
                                         C = k,
                                         D = l,
-                                        Stat = LotteryStat.Selling,
-                                        Type = LotteryType.NotProcessed,
+                                        Stat = (int)LotteryStat.Selling,
+                                        Type = (int)LotteryType.NotProcessed,
                                         BuyerId = 0
                                     };
                                     lp1s.Add(lp1);
@@ -161,6 +192,11 @@ namespace PokerLottery.Services
                     _mysqlContext.SaveChanges();
                 }
             }
+        }
+
+        private bool SendLotteryTickets(BuyerIssue buyerIssue, LotteryIssue lotteryIssue)
+        {
+
         }
         #endregion
     }

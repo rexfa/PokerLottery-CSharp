@@ -18,7 +18,6 @@ namespace PokerLottery.EF.Domain
         /// </summary>
         public int Type { get; set; }
         public DateTime OrderTime { get; set; }
-
         public LotteryBuyer LotteryBuyer { get; set; }
         public LotteryIssue LotteryIssue { get; set; }
     }

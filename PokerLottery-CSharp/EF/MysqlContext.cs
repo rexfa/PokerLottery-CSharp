@@ -19,8 +19,7 @@ namespace PokerLottery.EF
         {
             return base.Set<TEntity>();
         }
-        public MysqlContext(DbContextOptions<MysqlContext> options) : base(options)
-        { }
+        public MysqlContext(DbContextOptions<MysqlContext> options) : base(options){}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
