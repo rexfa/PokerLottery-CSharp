@@ -6,6 +6,7 @@ using PokerLottery.EF.Domain;
 using PokerLottery.EF;
 using Microsoft.Extensions.Caching.Memory;
 using PokerLottery.Configuration;
+using PokerLottery.Models;
 
 namespace PokerLottery.Services
 {
@@ -80,6 +81,7 @@ namespace PokerLottery.Services
                 _buyerIssueRepository.Insert(buyerIssue);
             }
             buyerIssue.PurchaseQuantity = buyerIssue.PurchaseQuantity + 1;
+
         }
         public LotteryIssue GetlatestIssue()
         {
@@ -194,10 +196,105 @@ namespace PokerLottery.Services
             }
         }
 
-        private bool SendLotteryTickets(BuyerIssue buyerIssue, LotteryIssue lotteryIssue)
+        private LotteryTicketModel SendLotteryTicket(BuyerIssue buyerIssue, LotteryIssue lotteryIssue)
         {
+            Random rd0 = new Random();
+            int a0 = rd0.Next(100) % 52;
+            int b0 = rd0.Next(100) % 52;
+            int c0 = rd0.Next(100) % 52;
+            int d0 = rd0.Next(100) % 52;
 
         }
+        #region Pool0
+        private LotteryPool0 GetTicketInLotteryPool0(int a ,int b, int c ,int d,int buyerId,int sellType)
+        {
+            var p0 = _pool0Repository.Table.Where(p => p.A == a && p.B == b && p.C == c && p.D == d).First();
+            if (p0.Stat == (int)LotteryStat.Selling)
+            {
+                p0.Stat = (int)LotteryStat.Sold;
+                p0.Type = sellType;
+                p0.OrderTime = DateTime.Now;
+                p0.BuyerId = buyerId;
+                _mysqlContext.SaveChanges();
+                return p0;
+            }
+            else
+            {
+                return GetSellingTicket0(p0, 1);
+            }
+        }
+        private LotteryPool0 GetSellingTicket0(LotteryPool0 lotteryPool0, int direction)
+        {
+            var lp0 = _pool0Repository.GetById(lotteryPool0.Id + direction);
+            if (lp0 != null)
+            {
+                direction = 0 - direction;
+                lp0 = GetSellingTicket0(lotteryPool0, direction);
+                return lp0;
+            }
+            else
+            {
+                if (lp0.Stat == (int)LotteryStat.Selling)
+                {
+                    return lp0;
+                }
+                else
+                {
+                    int abs = Math.Abs(direction);
+                    int i = direction / abs;
+                    abs++;
+                    direction = i * abs;
+                    lp0 = GetSellingTicket0(lotteryPool0, direction);
+                    return lp0;
+                }
+            }            
+        }
+        #endregion
+        #region Pool1
+        private LotteryPool1 GetTicketInLotteryPool1(int a, int b, int c, int d, int buyerId, int sellType)
+        {
+            var p1 = _pool1Repository.Table.Where(p => p.A == a && p.B == b && p.C == c && p.D == d).First();
+            if (p1.Stat == (int)LotteryStat.Selling)
+            {
+                p1.Stat = (int)LotteryStat.Sold;
+                p1.Type = sellType;
+                p1.OrderTime = DateTime.Now;
+                p1.BuyerId = buyerId;
+                _mysqlContext.SaveChanges();
+                return p1;
+            }
+            else
+            {
+                return GetSellingTicket1(p1, 1);
+            }
+        }
+        private LotteryPool1 GetSellingTicket1(LotteryPool1 lotteryPool1, int direction)
+        {
+            var lp1 = _pool1Repository.GetById(lotteryPool1.Id + direction);
+            if (lp1 != null)
+            {
+                direction = 0 - direction;
+                lp1 = GetSellingTicket1(lotteryPool1, direction);
+                return lp1;
+            }
+            else
+            {
+                if (lp1.Stat == (int)LotteryStat.Selling)
+                {
+                    return lp1;
+                }
+                else
+                {
+                    int abs = Math.Abs(direction);
+                    int i = direction / abs;
+                    abs++;
+                    direction = i * abs;
+                    lp1 = GetSellingTicket1(lotteryPool1, direction);
+                    return lp1;
+                }
+            }
+        }
+        #endregion
         #endregion
     }
 }
