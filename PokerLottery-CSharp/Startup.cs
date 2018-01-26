@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PokerLottery.EF;
+using PokerLottery.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace PokerLottery
@@ -25,7 +26,11 @@ namespace PokerLottery
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MysqlContext>(options => options.UseMySql(Configuration.GetSection("ConnectionStrings")["MysqlConnection"]));
+            services.AddMemoryCache();
             services.AddMvc();
+            services.AddOptions();
+            services.AddScoped<IBuyerService, BuyerService>();
+            services.AddScoped<ILotteryService, LotteryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

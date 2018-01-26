@@ -62,7 +62,7 @@ namespace PokerLottery.Services
             ConstructPool(poolCmd);
             return true;
         }
-        public BuyerIssue SellLottery(LotteryBuyer lotteryBuyer, LotteryType lotteryType)
+        public LotteryTicketModel SellLottery(LotteryBuyer lotteryBuyer, LotteryType lotteryType)
         {
             var issue = GetlatestIssue();
             if (issue == null)
@@ -81,7 +81,8 @@ namespace PokerLottery.Services
                 _buyerIssueRepository.Insert(buyerIssue);
             }
             buyerIssue.PurchaseQuantity = buyerIssue.PurchaseQuantity + 1;
-
+            LotteryTicketModel model = SendLotteryTicket(buyerIssue, issue, (int)lotteryType);
+            return model;
         }
         public LotteryIssue GetlatestIssue()
         {
@@ -196,13 +197,52 @@ namespace PokerLottery.Services
             }
         }
 
-        private LotteryTicketModel SendLotteryTicket(BuyerIssue buyerIssue, LotteryIssue lotteryIssue)
+        private LotteryTicketModel SendLotteryTicket(BuyerIssue buyerIssue, LotteryIssue lotteryIssue, int sellType)
         {
+            if(lotteryIssue.Stat!=(int)IssueStat.Establish)
+            {
+                throw new Exception("当期已经结束，不再接受订单。");
+            }
             Random rd0 = new Random();
             int a0 = rd0.Next(100) % 52;
             int b0 = rd0.Next(100) % 52;
             int c0 = rd0.Next(100) % 52;
             int d0 = rd0.Next(100) % 52;
+            if (lotteryIssue.PoolCmd == 0)
+            {
+                var lp0 = GetTicketInLotteryPool0(a0, b0, c0, d0, buyerIssue.BuyerId, sellType);
+                LotteryTicketModel model = new LotteryTicketModel()
+                {
+                    A = lp0.A,
+                    B = lp0.B,
+                    C = lp0.C,
+                    D = lp0.D,
+                    BuyerId = lp0.BuyerId,
+                    PoolCmd = 0,
+                    Stat = lp0.Stat,
+                    Type = lp0.Type,
+                    OrderOn = DateTime.Now
+                };
+                return model;
+            }
+            else if (lotteryIssue.PoolCmd == 1)
+            {
+                var lp1 = GetTicketInLotteryPool1(a0, b0, c0, d0, buyerIssue.BuyerId, sellType);
+                LotteryTicketModel model = new LotteryTicketModel()
+                {
+                    A = lp1.A,
+                    B = lp1.B,
+                    C = lp1.C,
+                    D = lp1.D,
+                    BuyerId = lp1.BuyerId,
+                    PoolCmd = 1,
+                    Stat = lp1.Stat,
+                    Type = lp1.Type,
+                    OrderOn = DateTime.Now
+                };
+                return model;
+            }
+            throw new Exception("数据命令不匹配500244，不接受订单。");
 
         }
         #region Pool0

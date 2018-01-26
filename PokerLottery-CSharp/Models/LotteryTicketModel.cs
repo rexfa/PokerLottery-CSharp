@@ -15,7 +15,7 @@ namespace PokerLottery.Models
         public DateTime OrderOn { get; set; }
         public int PoolCmd { get; set; }
         public int BuyerId { get; set; }
-        public int Issue { get; set; }
+        public int IssueId { get; set; }
         public int Stat { get; set; }
         /// <summary>
         /// 获得类型
