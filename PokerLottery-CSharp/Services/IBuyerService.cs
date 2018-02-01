@@ -11,6 +11,7 @@ namespace PokerLottery.Services
     {
         LotteryBuyer AddBuyer(string BuyerChId,string BuyerChName,string Weixin,int ChannelId);
         IList<LotteryTicketModel> GetCurrentLotteysByBuyer(LotteryBuyer lotteryBuyer);
+        IList<LotteryTicketModel> GetLotteysByBuyer(LotteryBuyer lotteryBuyer, int Backtrack = 0);
 
     }
 }
