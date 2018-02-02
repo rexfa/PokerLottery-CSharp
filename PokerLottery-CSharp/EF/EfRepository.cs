@@ -175,6 +175,8 @@ namespace PokerLottery.EF
                 return _entities;
             }
         }
+
+        DbSet<T> IRepository<T>.CurrentDbSet { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         #endregion
     }
 }
