@@ -28,6 +28,14 @@ namespace PokerLottery.Services
             _issueRepository = new EfRepository<LotteryIssue>(this._mysqlContext);
             _memoryCache = memoryCache;
         }
+        /// <summary>
+        /// 增加用户
+        /// </summary>
+        /// <param name="BuyerChId"></param>
+        /// <param name="BuyerChName"></param>
+        /// <param name="Weixin"></param>
+        /// <param name="ChannelId"></param>
+        /// <returns></returns>
         public LotteryBuyer AddBuyer(string BuyerChId, string BuyerChName, string Weixin, int ChannelId)
         {
             var now = DateTime.Now;
@@ -42,7 +50,11 @@ namespace PokerLottery.Services
             _buyerRepository.Insert(newBuyer);
             return newBuyer;
         }
-
+        /// <summary>
+        /// 活的用户已经持有的当前期彩票
+        /// </summary>
+        /// <param name="lotteryBuyer"></param>
+        /// <returns></returns>
         public IList<LotteryTicketModel> GetCurrentLotteysByBuyer(LotteryBuyer lotteryBuyer)
         {
             var issue = _issueRepository.Table.OrderByDescending(i => i.CreatedOn).FirstOrDefault();
@@ -96,7 +108,12 @@ namespace PokerLottery.Services
             else { throw new Exception("奖池命令错误！"); }
             return models;
         }
-
+        /// <summary>
+        /// 活的用户所有的彩票
+        /// </summary>
+        /// <param name="lotteryBuyer"></param>
+        /// <param name="Backtrack"></param>
+        /// <returns></returns>
         public IList<LotteryTicketModel> GetLotteysByBuyer(LotteryBuyer lotteryBuyer, int Backtrack = 0)
         {
             var issues = _issueRepository.Table.OrderByDescending(i => i.CreatedOn).Take(Backtrack + 1);
